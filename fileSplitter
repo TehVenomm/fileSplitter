@@ -1,0 +1,36 @@
+import os
+import sys
+
+def splitFiles(chunkSize, fname):
+    lines_per_file = chunkSize
+    smallfile = None
+    fid = 0
+    with open(fname) as bigfile:
+        for lineno, line in enumerate(bigfile):
+            if lineno % lines_per_file == 0:
+                if smallfile:
+                    smallfile.close()
+                fid += 1
+                if (fid == 1):
+                    nameFormatted = fname
+                else:
+                    nameFormatted = fname.replace('S', str(fid))
+                small_filename = nameFormatted+'-'
+                smallfile = open(small_filename, "w")
+            smallfile.write(line)
+        if smallfile:
+            smallfile.close()
+            
+    os.remove(fname)
+    while (fid > 0):
+        if (fid == 1):
+            nameFormatted = fname
+        else:
+            nameFormatted = fname.replace('S', str(fid))
+        os.rename(nameFormatted+'-', nameFormatted)
+        fid -= 1
+        
+if __name__ == "__main__":
+    chunkSize = int(sys.argv[1])
+    fileName  = sys.argv[2]
+    splitFiles(chunkSize, fileName)

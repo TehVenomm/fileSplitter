@@ -12,10 +12,9 @@ def splitFiles(chunkSize, fname):
                     smallfile.close()
                 fid += 1
                 if (fid == 1):
-                    nameFormatted = fname
+                    small_filename = fname+'-'
                 else:
-                    nameFormatted = fname.replace('S', str(fid))
-                small_filename = nameFormatted+'-'
+                    small_filename = fname.replace('S', str(fid))+'-'
                 smallfile = open(small_filename, "w")
             smallfile.write(line)
         if smallfile:
